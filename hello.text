@@ -1,1 +1,520 @@
-hello bahu
+import 'package:animalkart/main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:chat_bubbles/chat_bubbles.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_link_previewer/flutter_link_previewer.dart';
+import 'package:animate_do/animate_do.dart';
+
+
+class chat_view extends StatefulWidget {
+  final String title;
+  chat_view({Key? key, required this.title}) : super(key: key);
+
+  @override
+  _chat_viewState createState() => _chat_viewState();
+}
+
+class _chat_viewState extends State<chat_view> {
+  final TextEditingController _replymessage = TextEditingController();
+   Map datas = {};
+  var item='https://www.youtube.com/watch?v=I3g25QLVTNs';
+   
+  AudioPlayer audioPlayer = new AudioPlayer();
+  Duration duration = new Duration();
+  Duration position = new Duration();
+  bool isPlaying = false;
+  bool isLoading = false;
+  bool isPause = false;
+  // final ScrollController _mycontrollerTop = ScrollController();
+  // final ScrollController _mycontrollerDown = ScrollController();
+
+  @override
+  void initState() {
+    bool isshow = true;
+
+    _replymessage.addListener(() {
+      var isshow = _replymessage.text.isNotEmpty;
+
+      setState(() {
+        isshow == isshow;
+      });
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+
+
+    final now = new DateTime.now();
+    return Scaffold(
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniEndDocked,
+      floatingActionButton: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Container(
+            color: Colors.transparent,
+            child: Row(
+              children: [
+                Flexible(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 12, right: 12, top: 0),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(0, 0, 0, 0),
+                    ),
+                    child: Stack(
+                      children: [
+                        TextFormField(
+                          onChanged: (value) {
+                            //  double endposition =
+                            //     _mycontrollerDown.position.maxScrollExtent;
+                            // _mycontrollerDown.position.jumpTo(endposition);
+                            double startpositon = .0;
+                           
+                          },
+                          minLines: 1,
+                          maxLines: 3,
+                          onTap: (() {
+                
+                          }),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          controller: _replymessage,
+                          cursorColor: Colors.black,
+                          style: TextStyle(color: mincolor),
+                          decoration: InputDecoration(
+                            suffixIcon:
+                                Row(mainAxisSize: MainAxisSize.min, children: [
+                              if (_replymessage.text.length <= 0) ...[
+                                // GestureDetector(
+                                //     onTap: (() {
+                                //       _replymessage.clear();
+                                //     }),
+                                //     child: Icon(
+                                //       Icons.cancel_outlined,
+                                //       color: Colors.white,
+                                //     )),
+                              ] else ...[
+                                GestureDetector(
+                                    onTap: (() {
+                                      _replymessage.clear();
+                                    }),
+                                    child: BounceInRight(
+                                      child: Icon(
+                                        Icons.cancel_outlined,
+                                        color: Colors.black,
+                                      ),
+                                    )),
+                              ],
+
+                              // Padding(
+                              //   padding: const EdgeInsets.all(8.0),
+                              //   child: Icon(
+                              //     CupertinoIcons.photo_on_rectangle,
+                              //     color: Colors.black,
+                              //   ),
+                              // ),
+
+                              if (_replymessage.text.length == 0) ...[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                   
+                                      FocusScope.of(context).unfocus();
+                                    },
+                                    child: BounceInRight(
+                                      child: Icon(
+                                        CupertinoIcons.photo_on_rectangle,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ] else ...[
+                                //  GestureDetector(
+                                //   onTap: (() {
+                                //     _replymessage.clear();
+                                //   }),
+                                //   child: Icon(
+                                //     Icons.cancel_outlined,
+                                //     color: Colors.black,
+                                //   )),
+                              ],
+                            ]),
+                            // suffixIcon: Container(
+                            //   height: 12,
+                            //   // width: 51,
+                            //   // color: Colors.green,
+
+                            //   child:IconButton(
+                            //   onPressed: () {
+                            //     setState(() {
+                            //       icColor = Color(0xFF202427);
+                            //     });
+
+                            //     _addReplyhere(context);
+                            //     print('my my');
+                            //   },
+                            //   icon: Icon(
+
+                            //     CupertinoIcons.photo_fill_on_rectangle_fill,
+                            //     color: icColor,
+
+                            //   )),
+                            // ),
+                            hintText: 'Reply Here',
+                            filled: true,
+                            fillColor: Color.fromARGB(255, 227, 227, 227),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // ElevatedButton(onPressed: (){
+
+                //   _mycontrollerOne.jumpTo(0);
+                // }, child: Text('dfdf'))
+                Container(
+                  height: 50,
+                  width: 50,
+                  child: AbsorbPointer(
+                    absorbing: _replymessage.text.length == 0 ? true : false,
+                    child: FloatingActionButton(
+                      backgroundColor: _replymessage.text.length == 0
+                          ? Colors.grey
+                          : mincolor,
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        // _mycontrollerTop.jumpTo(_mycontrollerTop.position.minScrollExtent);
+                        // _mycontrollerTop.animateTo(_mycontrollerTop.position.minScrollExtent, duration: Duration(milliseconds: 300), curve:Curves.easeOut, );
+                        // setState(() {
+                        //       print(showHide);
+                        //       showHide=false;
+                        //         print(showHide);
+
+                        //   });
+                        
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Icon(
+                            Icons.send_rounded,
+                            color: Colors.white,
+                            size: 31,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+     
+      appBar: AppBar(
+
+        //  automaticallyImplyLeading: false,
+        actions: [
+          IconButton(onPressed: (){
+
+          }, icon: Icon(CupertinoIcons.phone,color: Colors.black,))
+        ],
+        leading:IconButton(onPressed: (){
+ Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back,color: Colors.black,)),
+        backgroundColor: Colors.white,
+
+    
+        title: 
+            Align(
+              alignment: Alignment.topLeft,
+              child: Row(
+                      children: [
+              Container(
+              padding: EdgeInsets.all(5),
+              width: 58,
+              child: CircleAvatar(
+                backgroundColor: Colors.grey,
+                backgroundImage: NetworkImage(
+                  "https://4.bp.blogspot.com/-Jx21kNqFSTU/UXemtqPhZCI/AAAAAAAAh74/BMGSzpU6F48/s1600/funny-cat-pictures-047-001.jpg"
+                )
+              ),
+            ),
+            Column(
+                      children: [
+              Text('Bahu',style: TextStyle(color: Colors.black),),
+              Text('Online',style: TextStyle(fontSize: 12,color: Color.fromARGB(255, 135, 134, 134,)),)
+                      ],
+                    ),
+                      ],
+                    ),
+            ),
+      ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+
+               
+                SizedBox(height: 12,),
+
+               
+                BubbleNormalAudio(
+                  
+                  color: Colors.black,
+                  duration: duration.inSeconds.toDouble(),
+                  position: position.inSeconds.toDouble(),
+                  isPlaying: isPlaying,
+                  isLoading: isLoading,
+                  isPause: isPause,
+                  onSeekChanged: _changeSeek,
+                  onPlayPauseButtonClick: _playAudio,
+                  sent: true,
+                   textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+                BubbleNormal(
+                  text: 'HI',
+                  isSender: false,
+                  color: Color(0xFFE8E8EE),
+                  tail: true,
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                BubbleNormal(
+                  text: 'HI bahu',
+                  isSender: true,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  tail: true,
+                  sent: true,
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+                DateChip(
+                  date: new DateTime(now.year, now.month, now.day - 2),
+                ),
+            
+               
+               
+                DateChip(
+                  
+        
+                  date: new DateTime(now.year, now.month, now.day +7),
+                ),
+              BubbleNormalAudio(
+                  
+                  color: Color(0xFFE8E8EE),
+                  duration: duration.inSeconds.toDouble(),
+                  position: position.inSeconds.toDouble(),
+                  isPlaying: isPlaying,
+                  isLoading: isLoading,
+                  isPause: isPause,
+                  onSeekChanged: _changeSeek,
+                  onPlayPauseButtonClick: _playAudio,
+                  isSender: false,
+                   textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+              
+                BubbleNormal(
+                  text: 'hiiiii',
+                  isSender: true,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  tail: true,
+                  sent: true,
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),),
+             
+              BubbleNormal(
+                  text: 'HI😀',
+                  isSender: false,
+                  color: Color(0xFFE8E8EE),
+                  tail: true,
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                BubbleNormalAudio(
+                  
+                  color: Color(0xFFE8E8EE),
+                  duration: duration.inSeconds.toDouble(),
+                  position: position.inSeconds.toDouble(),
+                  isPlaying: isPlaying,
+                  isLoading: isLoading,
+                  isPause: isPause,
+                  onSeekChanged: _changeSeek,
+                  onPlayPauseButtonClick: _playAudio,
+                 isSender: false,
+                   textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+                
+                DateChip(
+                  
+        
+                  date: new DateTime(now.year, now.month, now.day +12),
+                ),
+              BubbleNormal(
+                  text: 'slkjflasf fadsjflasjhc ksldjhf aksdjhflaksdjfhjfhdjhfdjhfdjfhdjhfdjhf jdsfh kjfhksadjfhkadsjhfckjdshfkajdshfkajsdhfkajsdhf kasdjhfkladjschflkjdsahfclkdjshflkjdsahflkjasdhfljashdfashclfhd',
+                  isSender: true,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  tail: true,
+                  sent: true,
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),),
+
+                   Container(
+                    margin: EdgeInsets.only(top: 12),
+                    width: 350,
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12),
+                                        ),
+                                        color:Color(0xFFE8E8EE),
+                                      ),
+                                      // margin: EdgeInsets.only(left: 31),
+                                      alignment: Alignment.topLeft,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                        child: LinkPreview(
+                                          openOnPreviewImageTap: true,
+                                          openOnPreviewTitleTap: true,
+                                          enableAnimation: true,
+                                          onPreviewDataFetched: (data) {
+                                            setState(() {
+                                              datas = {
+                                                ...datas,
+                                                item: data,
+                                              };
+                                            });
+                                          },
+                                          previewData: datas[item],
+                                          text: item,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                        ),
+                                      ),
+                                    ),
+                SizedBox(
+                  height: 100,
+                )
+              ],
+            ),
+          ),
+          // MessageBar(
+          //   sendButtonColor: Colors.black,
+          //   replyCloseColor: Colors.black,
+          //   onSend: (_) => print(_),
+          //   actions: [
+          //     InkWell(
+          //       child: Icon(
+          //         Icons.add,
+          //         color: Colors.black,
+          //         size: 24,
+          //       ),
+          //       onTap: () {},
+          //     ),
+          //     Padding(
+          //       padding: EdgeInsets.only(left: 8, right: 8),
+          //       child: InkWell(
+          //         child: Icon(
+          //           Icons.camera_alt,
+          //           color: Colors.black,
+          //           size: 24,
+          //         ),
+          //         onTap: () {},
+          //       ),
+          //     ),
+          //   ],
+          // ),
+
+
+
+          
+        ],
+      ),
+      // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  void _changeSeek(double value) {
+    setState(() {
+      audioPlayer.seek(new Duration(seconds: value.toInt()));
+    });
+  }
+
+  void _playAudio() async {
+    final url =
+        'dfd';
+    if (isPause) {
+      await audioPlayer.resume();
+      setState(() {
+        isPlaying = true;
+        isPause = false;
+      });
+    } else if (isPlaying) {
+      await audioPlayer.pause();
+      setState(() {
+        isPlaying = false;
+        isPause = true;
+      });
+    } else {
+      setState(() {
+        isLoading = true;
+      });
+      // await audioPlayer.play(url);
+      // setState(() {
+      //   isPlaying = true;
+      // });
+    }
+
+    audioPlayer.onDurationChanged.listen((Duration d) {
+      setState(() {
+        duration = d;
+        isLoading = false;
+      });
+    });
+    // audioPlayer.onAudioPositionChanged.listen((Duration p) {
+    //   setState(() {
+    //     position = p;
+    //   });
+    // });
+    // audioPlayer.onPlayerCompletion.listen((event) {
+    //   setState(() {
+    //     isPlaying = false;
+    //     duration = new Duration();
+    //     position = new Duration();
+    //   });
+    // });
+  }
+}
